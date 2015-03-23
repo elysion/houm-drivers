@@ -1,0 +1,2 @@
+echo opening channel to remote cec
+ssh raspbmc -t "cec-client -d 1"
