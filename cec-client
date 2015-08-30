@@ -1,2 +1,3 @@
 echo opening channel to remote cec
+ssh raspbmc -t "kill `pidof cec-client`"
 ssh raspbmc -t "cec-client -d 1"
