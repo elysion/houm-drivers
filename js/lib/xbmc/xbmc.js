@@ -19,21 +19,26 @@ var EVENTS = {
 }
 
 function init(options, cb) {
-  var envHostParts = (process.env.XBMC_HOST || '').split(':')
-  var connection = Xbmc(options.host || envHostParts[0] || '127.0.0.1', options.port || envHostParts[1] || 9090);
+  var hostAndPort = process.env.XBMC_HOST || ''
+  var envHostParts = hostAndPort.split(':')
+  var host = options.host || envHostParts[0] || '127.0.0.1'
+  var port = options.port || envHostParts[1] || 9090
 
-  cb({connection: connectionStream(connection), events: toStream(connection, EVENTS), commands: commands})
+  Xbmc(host, port).then(function (connection) {
+    cb({connection: connectionStream(connection), events: toStream(connection, EVENTS), commands: commands})
 
-  connection.on('connection', function () {
-    console.info("XBMC connection opened");
-  })
+    connection.on('connection', function () {
+      console.info("XBMC connection opened");
+    })
 
-  commands.assign(function(command) {
-    var data = command.data == 'true' || command.data == 'false' ? command.data == 'true' : command.data
+    commands.assign(function(command) {
+      var data = command.data == 'true' || command.data == 'false' ? command.data == 'true' : command.data
 
-    console.log('running ', command.method, 'with data', data)
-    connection.run(command.method).apply(null, data.filter(function (data) { return data !== undefined }))
-  })
+      console.log('running ', command.method, 'with data', data)
+      var arguments = data.filter(function (data) { return data !== undefined })
+      connection.run(command.method, arguments)
+    })
+  });
 }
 
 function connectionStream(connection) {

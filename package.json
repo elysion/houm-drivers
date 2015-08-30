@@ -6,12 +6,13 @@
   "dependencies": {
     "baconjs": "0.7.41",
     "carrier": "^0.1.14",
+    "eversocket": "0.0.4",
     "jquery": "2.1.3",
     "nodecec": "0.0.3",
     "request": "2.51.0",
     "ws": "0.6.3",
     "xbmc": "^0.4.1",
-    "xbmc-ws": "^1.1.1"
+    "xbmc-ws": "^2.1.2"
   },
   "devDependencies": {},
   "scripts": {
